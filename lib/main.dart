@@ -4,17 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'signup_page.dart';
 import 'registration_page.dart';
-import 'firebase_options.dart';
+import 'firebase_options.dart'; // Ensure this file exists for Firebase configurations
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  // Set Firebase Auth persistence
-  await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
-
   runApp(const MyApp());
 }
 
@@ -27,20 +23,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Firebase Login',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasData) {
-            // User is signed in
-            return const RegistrationPage();
-          }
-          // User is not signed in
-          return const LoginPage(email: '', password: '');
-        },
-      ),
+      home: const LoginPage(email: 'test@example.com', password: 'password123'),
     );
   }
 }
@@ -66,39 +49,56 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _onLogin() {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all the fields!')),
+  void _onLogin() async {
+  if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please fill all the fields!')),
+    );
+  } else {
+    try {
+      final UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
       );
-    } else if (_emailController.text == widget.email &&
-        _passwordController.text == widget.password) {
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const RegistrationPage(),
-          transitionsBuilder:
-              (context, animation, secondaryAnimation, child) {
-            var opacityTween = Tween(begin: 0.0, end: 1.0);
-            var opacityAnimation = animation.drive(opacityTween);
+      if (userCredential.user != null) {
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                const RegistrationPage(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              var opacityTween = Tween(begin: 0.0, end: 1.0);
+              var opacityAnimation = animation.drive(opacityTween);
 
-            return FadeTransition(opacity: opacityAnimation, child: child);
-          },
-        ),
-      );
-    } else {
+              return FadeTransition(opacity: opacityAnimation, child: child);
+            },
+          ),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No user found for that email.')),
+        );
+      } else if (e.code == 'wrong-password') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Wrong password provided for that user.')),
+        );
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Invalid credentials!')),
+        SnackBar(content: Text('Error during login: $e')),
       );
     }
   }
+}
 
   Future<void> _onGoogleSignIn() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) {
-        // User canceled the sign-in process
+        // The user canceled the sign-in
         return;
       }
 
@@ -109,13 +109,15 @@ class _LoginPageState extends State<LoginPage> {
         idToken: googleAuth.idToken,
       );
 
-      // Sign in to Firebase with the Google credential
       final UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
-
+      
+      // Check if user exists in Firebase Auth
       final User? user = userCredential.user;
       if (user != null) {
-        print('User signed in: ${user.email}');
+        // Perform any additional checks if necessary (e.g., custom user properties)
+
+        // If user exists, navigate to the next page
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -123,6 +125,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
       } else {
+        // User does not exist in Firebase
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('User not found in Firebase.')),
         );
@@ -248,7 +251,8 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.push(
                         context,
                         PageRouteBuilder(
-                          pageBuilder: (context, animation, secondaryAnimation) =>
+                          pageBuilder: (context, animation,
+                                  secondaryAnimation) =>
                               const SignUpPage(),
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
