@@ -18,17 +18,19 @@ Toll Seva is a modern, IoT-powered toll collection system that eliminates the ne
 
 ## 📱 Technologies Used
 
-| Technology | Purpose |
-|-----------|---------|
-| **Flutter** | Mobile app development |
-| **Firebase** | Real-time database, authentication |
-| **Arduino Uno** | Microcontroller for IoT device |
-| **ELM327 (MODAXE)** | OBD-II vehicle diagnostics |
-| **NEO-6M GPS** | Location tracking |
-| **SIM800L GSM** | Emergency SMS alerts |
-| **HC-05 Bluetooth** | Device-phone communication |
-| **Razorpay SDK** | Wallet top-up & online payments |
-| **Tesseract OCR** | Vehicle registration text reading |
+
+| Technology           | Purpose                                |
+|----------------------|----------------------------------------|
+| **Flutter**          | Mobile app development                 |
+| **Firebase**         | Real-time database, authentication     |
+| **Arduino Uno**      | Microcontroller for IoT device         |
+| **ELM327 (MODAXE)**  | OBD-II vehicle diagnostics             |
+| **NEO-6M GPS**       | Location tracking                      |
+| **SIM800L GSM**      | Emergency SMS alerts                   |
+| **HC-05 Bluetooth**  | Device-phone communication             |
+| **SW-420 Sensor**    | Vibration detection for accidents      |
+| **Razorpay SDK**     | Wallet top-up & online payments        |
+| **Tesseract OCR**    | Vehicle registration text reading      |
 
 ---
 
