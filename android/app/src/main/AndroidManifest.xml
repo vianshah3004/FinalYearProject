@@ -82,7 +82,7 @@
             android:value="2" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBsQlXMOBa77G6zjlBo_kmB_dqz_OW8Dng" />
+            android:value="google api key over here " />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
