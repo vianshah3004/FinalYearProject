@@ -15,11 +15,11 @@ SoftwareSerial gsmSerial(GSM_RX, GSM_TX);
 SoftwareSerial HC05(HC05_RX, HC05_TX);
 TinyGPSPlus gps;
 
-#define VEHICLE_VIN "MAKGD862A6N304350"
-#define OBD_MAC "0010,CC,4F3603"
-#define EMERGENCY_NUMBER "+919324787961"
-#define FIREBASE_HOST "fir-demo-95959-default-rtdb.firebaseio.com"
-#define FIREBASE_AUTH "AQEdvwJ5pRonBaTfydhF5dQHYLEEEkB8iaFPmkC2"
+#define VEHICLE_VIN ""
+#define OBD_MAC ""
+#define EMERGENCY_NUMBER ""
+#define FIREBASE_HOST ""
+#define FIREBASE_AUTH ""
 #define BAUD_RATE 9600
 #define BUFFER_RADIUS 0.5
 
