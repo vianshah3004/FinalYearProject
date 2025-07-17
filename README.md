@@ -50,7 +50,7 @@ Toll Seva is a modern, IoT-powered toll collection system that eliminates the ne
 ### Mobile App
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/toll-seva.git
+   git clone https://github.com/vianshah3004/FinalYearProject.git
    ```
 2. Navigate to the Flutter app:
    ``` bash
