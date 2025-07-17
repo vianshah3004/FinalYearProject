@@ -41,7 +41,7 @@ Toll Seva is a modern, IoT-powered toll collection system that eliminates the ne
 - Toll calculated dynamically based on vehicle type and zone
 - Toll auto-deducted from user’s app wallet
 - Emergency events trigger automatic alerts via GSM
-- Admin dashboard and user app synchronized through Firebase
+
 
 ---
 
