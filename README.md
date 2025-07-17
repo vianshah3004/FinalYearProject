@@ -54,7 +54,7 @@ Toll Seva is a modern, IoT-powered toll collection system that eliminates the ne
    ```
 2. Navigate to the Flutter app:
    ``` bash
-   cd toll-seva/mobile
+   cd FinalYearProject  
    ```
 3. Install dependencies:
    ```bash
